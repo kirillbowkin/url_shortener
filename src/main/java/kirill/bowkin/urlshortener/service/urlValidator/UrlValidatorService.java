@@ -1,17 +1,12 @@
 package kirill.bowkin.urlshortener.service.urlValidator;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.regex.Pattern;
 
 public class UrlValidatorService implements UrlValidator {
+    private final String URL_PATTERN = "^(?:(?:http(?:s)?|ftp)://)(?:\\S+(?::(?:\\S)*)?@)?(?:(?:[a-z0-9\u00a1-\uffff](?:-)*)*(?:[a-z0-9\u00a1-\uffff])+)(?:\\.(?:[a-z0-9\u00a1-\uffff](?:-)*)*(?:[a-z0-9\u00a1-\uffff])+)*(?:\\.(?:[a-z0-9\u00a1-\uffff]){2,})(?::(?:\\d){2,5})?(?:/(?:\\S)*)?$";
+
     @Override
     public boolean verify(String url) {
-        try {
-            new URL(url).toURI();
-            return true;
-        } catch (MalformedURLException | URISyntaxException e) {
-            return false;
-        }
+        return Pattern.compile(URL_PATTERN).matcher(url).matches();
     }
 }
