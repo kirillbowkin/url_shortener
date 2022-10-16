@@ -11,6 +11,6 @@ public class UrlShortenerController {
 
     @PostMapping("/generate")
     public GenerateResponseDto generateShortUrl(@RequestBody GenerateRequestDto requestDto) {
-
+        return null;
     }
 }
