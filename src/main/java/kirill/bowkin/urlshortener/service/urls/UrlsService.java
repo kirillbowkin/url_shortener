@@ -14,6 +14,7 @@ import java.util.Optional;
 public class UrlsService {
     private final UrlsRepository urlsRepository;
     private final ShortUrlGenerator shortUrlGenerator;
+    private final int RETRY_NUM = 3;
 
     public UrlsService(UrlsRepository urlsRepository, ShortUrlGenerator shortUrlGenerator) {
         this.urlsRepository = urlsRepository;
@@ -37,8 +38,7 @@ public class UrlsService {
         UrlsEntity urlsEntity = new UrlsEntity();
         urlsEntity.setUrl(url);
 
-        int retry_num = 3;
-        for (int i = 0; i < retry_num; i++) {
+        for (int i = 0; i < RETRY_NUM; i++) {
             String shortUrl = shortUrlGenerator.generateShortUrl(url + Math.random());
             urlsEntity.setShortUrl(shortUrl);
             try {
