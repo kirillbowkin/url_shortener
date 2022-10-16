@@ -20,6 +20,10 @@ public class UrlsService {
         this.shortUrlGenerator = shortUrlGenerator;
     }
 
+    public Optional<UrlsEntity> find(String shortUrl) {
+        return urlsRepository.findById(shortUrl);
+    }
+
     public UrlsEntity save(String url) throws UrlFailedToSaveException {
         Optional<UrlsEntity> urlsEntityOptional = urlsRepository.findByUrl(url);
         if(urlsEntityOptional.isPresent()) {
