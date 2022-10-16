@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ShortUrlGeneratorService implements ShortUrlGenerator {
 
     private final StringShortener stringShortener;
-    @Value("${hostname")
+    @Value("${hostname}")
     private String hostname;
 
     public ShortUrlGeneratorService(StringShortener stringShortener) {
