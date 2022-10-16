@@ -20,6 +20,10 @@ public class UrlsService {
         this.shortUrlGenerator = shortUrlGenerator;
     }
 
+    public void incrementCounter(String shortUrl) {
+        urlsRepository.incrementCounter(shortUrl);
+    }
+
     public Optional<UrlsEntity> find(String shortUrl) {
         return urlsRepository.findById(shortUrl);
     }

@@ -25,6 +25,8 @@ public class RedirectController {
         String shortUrl = httpServletRequest.getRequestURL().toString();
         Optional<UrlsEntity> urlsEntity = urlsService.find(shortUrl);
         if (urlsEntity.isPresent()) {
+            urlsService.incrementCounter(shortUrl);
+
             String originalUrl = urlsEntity.get().getUrl();
             return new RedirectView(originalUrl);
         }
