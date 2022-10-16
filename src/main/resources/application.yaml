@@ -16,3 +16,5 @@ spring:
     url: jdbc:postgresql://${DB_ADDRESS}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+hostname: "${HOSTNAME}: localhost:8080"

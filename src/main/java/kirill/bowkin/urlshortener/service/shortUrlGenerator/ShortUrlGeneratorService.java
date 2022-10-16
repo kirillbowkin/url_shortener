@@ -1,25 +1,24 @@
 package kirill.bowkin.urlshortener.service.shortUrlGenerator;
 
 
+import kirill.bowkin.urlshortener.service.stringShortener.StringShortener;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
 
 @Service
 public class ShortUrlGeneratorService implements ShortUrlGenerator {
 
-    private final MessageDigest messageDigest;
-    private final int urlLength = 5;
+    private final StringShortener stringShortener;
+    @Value("${hostname")
+    private String hostname;
 
-    public ShortUrlGeneratorService(MessageDigest messageDigest) {
-        this.messageDigest = messageDigest;
+    public ShortUrlGeneratorService(StringShortener stringShortener) {
+        this.stringShortener = stringShortener;
     }
 
     @Override
-    public String shorten(String url) {
-        messageDigest.update(url.getBytes());
-        byte[] digest = messageDigest.digest();
-        return DatatypeConverter.printHexBinary(digest).toLowerCase().substring(0, urlLength);
+    public String generateShortUrl(String url) {
+        String shortenedString = stringShortener.shortenString(url);
+        return "http://" + hostname + "/l/" + shortenedString;
     }
 }
