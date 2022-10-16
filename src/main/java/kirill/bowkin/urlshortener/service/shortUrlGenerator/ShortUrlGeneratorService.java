@@ -19,6 +19,10 @@ public class ShortUrlGeneratorService implements ShortUrlGenerator {
     @Override
     public String generateShortUrl(String url) {
         String shortenedString = stringShortener.shortenString(url);
+        return buildUrl(hostname, "/l/", shortenedString);
+    }
+
+    private String buildUrl(String hostname, String delimiter, String shortenedString) {
         return "http://" + hostname + "/l/" + shortenedString;
     }
 }
