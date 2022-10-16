@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 public class ShortUrlGeneratorService implements ShortUrlGenerator {
 
     private final MessageDigest messageDigest;
+    private final int urlLength = 5;
 
     public ShortUrlGeneratorService(MessageDigest messageDigest) {
         this.messageDigest = messageDigest;
@@ -19,7 +20,6 @@ public class ShortUrlGeneratorService implements ShortUrlGenerator {
     public String shorten(String url) {
         messageDigest.update(url.getBytes());
         byte[] digest = messageDigest.digest();
-        String shortenUrl = DatatypeConverter.printHexBinary(digest).toLowerCase().substring(0, 5);
-        return shortenUrl;
+        return DatatypeConverter.printHexBinary(digest).toLowerCase().substring(0, urlLength);
     }
 }
