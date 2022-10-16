@@ -13,14 +13,14 @@ class UrlValidatorServiceTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/valid_urls.csv")
     void shouldReturnTrueIfUrlIsValid(String url) {
-        boolean isValid = urlValidatorService.verify(url);
+        boolean isValid = urlValidatorService.validate(url);
         assertTrue(isValid);
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/invalid_urls.csv")
     void shouldReturnFalseIfUrlIsInvalid(String url) {
-        boolean isValid = urlValidatorService.verify(url);
+        boolean isValid = urlValidatorService.validate(url);
         assertFalse(isValid);
     }
 }
