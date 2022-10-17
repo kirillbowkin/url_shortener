@@ -17,7 +17,10 @@ public interface UrlsRepository extends JpaRepository<UrlsEntity, String> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE urls SET count = count + 1 WHERE short_url = :shortUrl",
+    @Query(value =
+            "update urls" +
+                    " set count = count + 1" +
+                    " where short_url = :shortUrl",
             nativeQuery = true)
     void incrementCounter(@Param("shortUrl") String shortUrl);
 
