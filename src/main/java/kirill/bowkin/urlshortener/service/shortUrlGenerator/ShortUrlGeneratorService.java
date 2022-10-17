@@ -5,6 +5,8 @@ import kirill.bowkin.urlshortener.service.stringShortener.StringShortener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import kirill.bowkin.urlshortener.service.urlBuilder.UrlBuilder;
+
 @Service
 public class ShortUrlGeneratorService implements ShortUrlGenerator {
 
@@ -19,10 +21,8 @@ public class ShortUrlGeneratorService implements ShortUrlGenerator {
     @Override
     public String generateShortUrl(String url) {
         String shortenedString = stringShortener.shortenString(url);
-        return buildUrl(hostname, "/l/", shortenedString);
+        return UrlBuilder.buildUrl(hostname, "/l/", shortenedString);
     }
 
-    private String buildUrl(String hostname, String delimiter, String shortenedString) {
-        return "http://" + hostname + "/l/" + shortenedString;
-    }
+
 }
