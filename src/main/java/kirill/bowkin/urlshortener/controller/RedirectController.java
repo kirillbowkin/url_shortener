@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
@@ -21,13 +22,14 @@ public class RedirectController {
     }
 
     @GetMapping("/l/{shortUrl}")
-    public RedirectView redirect(HttpServletRequest httpServletRequest) {
+    public RedirectView redirect(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String shortUrl = httpServletRequest.getRequestURL().toString();
         Optional<UrlsEntity> urlsEntity = urlsService.find(shortUrl);
         if (urlsEntity.isPresent()) {
             urlsService.incrementCounter(shortUrl);
 
             String originalUrl = urlsEntity.get().getUrl();
+            httpServletResponse.addHeader("Cache-Control", "max-age=60, must-revalidate, no-transform");
             return new RedirectView(originalUrl);
         }
 
