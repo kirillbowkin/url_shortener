@@ -8,8 +8,10 @@ import kirill.bowkin.urlshortener.repository.UrlsRankViewRepository;
 import kirill.bowkin.urlshortener.repository.UrlsRepository;
 import kirill.bowkin.urlshortener.service.shortUrlGenerator.ShortUrlGenerator;
 import kirill.bowkin.urlshortener.view.UrlsWithRankView;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,10 @@ public class UrlsService {
         this.urlsRepository = urlsRepository;
         this.urlsRankViewRepository = urlsRankViewRepository;
         this.shortUrlGenerator = shortUrlGenerator;
+    }
+
+    public List<UrlsWithRankView> findAllRankView(Pageable pageable){
+        return urlsRankViewRepository.findAll(pageable);
     }
 
     public Optional<UrlsWithRankView> findOneUrlsRankView(String shortUrl) {
