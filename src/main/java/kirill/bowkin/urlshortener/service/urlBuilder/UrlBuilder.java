@@ -1,8 +1,15 @@
 package kirill.bowkin.urlshortener.service.urlBuilder;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class UrlBuilder {
+
+    private static final Logger logger = LoggerFactory.getLogger(UrlBuilder.class);
     public static String buildUrl(String hostname, String delimiter, String shortenedString) {
-        return "http://" + hostname + "/l/" + shortenedString;
+        String url = "http://" + hostname + delimiter + shortenedString;
+        logger.info("From hostname: {}, delimiter: {}, shortenedString: {} - built url {}", hostname, delimiter, shortenedString, url);
+        return url;
     }
 }

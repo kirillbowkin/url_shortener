@@ -8,6 +8,8 @@ import kirill.bowkin.urlshortener.repository.UrlsRankViewRepository;
 import kirill.bowkin.urlshortener.repository.UrlsRepository;
 import kirill.bowkin.urlshortener.service.shortUrlGenerator.ShortUrlGenerator;
 import kirill.bowkin.urlshortener.view.UrlsWithRankView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class UrlsService {
     private final UrlsRepository urlsRepository;
     private final UrlsRankViewRepository urlsRankViewRepository;
     private final ShortUrlGenerator shortUrlGenerator;
+    private final Logger logger = LoggerFactory.getLogger(UrlsService.class);
     private final int RETRY_NUM = 3;
 
     public UrlsService(UrlsRepository urlsRepository, UrlsRankViewRepository urlsRankViewRepository, ShortUrlGenerator shortUrlGenerator) {
@@ -56,12 +59,16 @@ public class UrlsService {
             String shortUrl = shortUrlGenerator.generateShortUrl(url + Math.random());
             urlsEntity.setShortUrl(shortUrl);
             try {
-                return addIfNotExists(urlsEntity);
+                UrlsEntity urlsEntitySaved = addIfNotExists(urlsEntity);
+                logger.info("Url {} saved successfully", url);
+                return urlsEntitySaved;
             } catch (UrlAlreadyExistsException e) {
+                logger.error("Failed to save url {} it's already exist, retry", url);
                 e.printStackTrace();
             }
         }
 
+        logger.error("Failed to save url {} after {} retries", url, RETRY_NUM);
         throw new UrlFailedToSaveException("Failed to save url");
     }
 
