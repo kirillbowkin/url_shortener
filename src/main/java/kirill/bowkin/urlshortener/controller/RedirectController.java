@@ -34,11 +34,11 @@ public class RedirectController {
             String originalUrl = urlsEntity.get().getUrl();
             httpServletResponse.addHeader("Cache-Control", "max-age=60, must-revalidate, no-transform");
 
-            logger.info("Redirecting from {} to {}", shortUrl, originalUrl);
+            logger.info("IN redirect - Redirecting from {} to {}", shortUrl, originalUrl);
             return new RedirectView(originalUrl);
         }
 
-        logger.error("Short url {} doesn't exist", shortUrl);
+        logger.error("IN redirect - Short url {} doesn't exist", shortUrl);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "short url doesn't exist");
     }
 }

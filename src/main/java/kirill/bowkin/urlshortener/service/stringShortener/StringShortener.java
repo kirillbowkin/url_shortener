@@ -22,7 +22,7 @@ public class StringShortener {
         messageDigest.update(s.getBytes());
         byte[] digest = messageDigest.digest();
         String shortString = DatatypeConverter.printHexBinary(digest).toLowerCase().substring(0, urlLength);
-        logger.info("For {} short string is {}", s, shortString);
+        logger.info("IN shortenString - For {} short string is {}", s, shortString);
         return shortString;
     }
 }

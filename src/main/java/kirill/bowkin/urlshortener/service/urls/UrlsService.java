@@ -60,16 +60,16 @@ public class UrlsService {
             urlsEntity.setShortUrl(shortUrl);
             try {
                 UrlsEntity urlsEntitySaved = addIfNotExists(urlsEntity);
-                logger.info("Url {} saved successfully", url);
+                logger.info("IN save - Url {} saved successfully", url);
                 return urlsEntitySaved;
             } catch (UrlAlreadyExistsException e) {
-                logger.error("Failed to save url {} it's already exist, retry", url);
+                logger.error("IN save - Failed to save url {} it's already exist, retry", url);
                 e.printStackTrace();
             }
         }
 
-        logger.error("Failed to save url {} after {} retries", url, RETRY_NUM);
-        throw new UrlFailedToSaveException("Failed to save url");
+        logger.error("IN save - Failed to save url {} after {} retries", url, RETRY_NUM);
+        throw new UrlFailedToSaveException("IN save - Failed to save url");
     }
 
     private UrlsEntity addIfNotExists(UrlsEntity urlsEntity) throws UrlAlreadyExistsException {

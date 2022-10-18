@@ -15,7 +15,7 @@ public class UrlValidatorService implements UrlValidator {
     public boolean validate(String url) {
         boolean isValid = Pattern.compile(URL_PATTERN).matcher(url).matches();
         if (isValid) logger.info("Url {} is valid", url);
-        else logger.error("Url {} is not valid", url);
+        else logger.error("IN validate - Url {} is not valid", url);
         return isValid;
     }
 }

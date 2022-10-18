@@ -46,7 +46,7 @@ public class StatisticController {
                     urlsWithRankView.getCount()
             );
         } else {
-            logger.error("Short url {} wasn't found", shortName);
+            logger.error("IN statForOne - Short url {} wasn't found", shortName);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Short url wasn't found");
         }
     }
