@@ -38,15 +38,15 @@ public class UrlsService {
         return urlsRankViewRepository.findById(shortUrl);
     }
 
-    public void incrementCounter(String shortUrl) {
-        urlsRepository.incrementCounter(shortUrl);
+    public void incrementUrlCounter(String shortUrl) {
+        urlsRepository.incrementUrlCounter(shortUrl);
     }
 
-    public Optional<UrlsEntity> find(String shortUrl) {
+    public Optional<UrlsEntity> findUrl(String shortUrl) {
         return urlsRepository.findById(shortUrl);
     }
 
-    public UrlsEntity save(String url) throws UrlFailedToSaveException {
+    public UrlsEntity saveUrl(String url) throws UrlFailedToSaveException {
         Optional<UrlsEntity> urlsEntityOptional = urlsRepository.findByUrl(url);
         if(urlsEntityOptional.isPresent()) {
             return urlsEntityOptional.get();
@@ -59,7 +59,7 @@ public class UrlsService {
             String shortUrl = shortUrlGenerator.generateShortUrl(url + Math.random());
             urlsEntity.setShortUrl(shortUrl);
             try {
-                UrlsEntity urlsEntitySaved = addIfNotExists(urlsEntity);
+                UrlsEntity urlsEntitySaved = addUrlIfNotExists(urlsEntity);
                 logger.info("IN save - Url {} saved successfully", url);
                 return urlsEntitySaved;
             } catch (UrlAlreadyExistsException e) {
@@ -72,7 +72,7 @@ public class UrlsService {
         throw new UrlFailedToSaveException("IN save - Failed to save url");
     }
 
-    private UrlsEntity addIfNotExists(UrlsEntity urlsEntity) throws UrlAlreadyExistsException {
+    private UrlsEntity addUrlIfNotExists(UrlsEntity urlsEntity) throws UrlAlreadyExistsException {
         boolean exists = urlsRepository.existsById(urlsEntity.getShortUrl());
         if (exists) {
             throw new UrlAlreadyExistsException("Url already exists in db");

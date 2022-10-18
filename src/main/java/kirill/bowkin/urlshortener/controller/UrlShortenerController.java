@@ -42,7 +42,7 @@ public class UrlShortenerController {
         }
 
         try {
-            UrlsEntity savedEntity = urlsService.save(originalUrl);
+            UrlsEntity savedEntity = urlsService.saveUrl(originalUrl);
             logger.info("IN generateShortUrl - Generated short url {} for {}", savedEntity.getShortUrl(), originalUrl);
             return new GenerateResponseDto(savedEntity.getShortUrl());
         } catch (UrlFailedToSaveException e) {

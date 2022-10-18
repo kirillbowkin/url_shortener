@@ -27,9 +27,9 @@ public class RedirectController {
     @GetMapping("/l/{shortUrl}")
     public RedirectView redirect(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String shortUrl = httpServletRequest.getRequestURL().toString();
-        Optional<UrlsEntity> urlsEntity = urlsService.find(shortUrl);
+        Optional<UrlsEntity> urlsEntity = urlsService.findUrl(shortUrl);
         if (urlsEntity.isPresent()) {
-            urlsService.incrementCounter(shortUrl);
+            urlsService.incrementUrlCounter(shortUrl);
 
             String originalUrl = urlsEntity.get().getUrl();
             httpServletResponse.addHeader("Cache-Control", "max-age=60, must-revalidate, no-transform");

@@ -22,6 +22,6 @@ public interface UrlsRepository extends JpaRepository<UrlsEntity, String> {
                     " set count = count + 1" +
                     " where short_url = :shortUrl",
             nativeQuery = true)
-    void incrementCounter(@Param("shortUrl") String shortUrl);
+    void incrementUrlCounter(@Param("shortUrl") String shortUrl);
 
 }
