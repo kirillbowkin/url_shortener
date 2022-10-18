@@ -34,8 +34,7 @@ public class StatisticController {
     @GetMapping("/stats/{shortName}")
     public StatOneResponseDto statForOne(@PathVariable("shortName") String shortName) {
         String shortUrl = new UrlBuilder()
-                .setHostname(hostname)
-                .setDelimiter("/")
+                .setDelimiter("/l/")
                 .setShortenedString(shortName)
                 .build();
 
