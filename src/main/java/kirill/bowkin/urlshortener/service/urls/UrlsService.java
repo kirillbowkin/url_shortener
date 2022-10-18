@@ -49,6 +49,7 @@ public class UrlsService {
     public UrlsEntity saveUrl(String url) throws UrlFailedToSaveException {
         Optional<UrlsEntity> urlsEntityOptional = urlsRepository.findByUrl(url);
         if(urlsEntityOptional.isPresent()) {
+            logger.info("IN saveUrl - url {} already exists, returning it", url);
             return urlsEntityOptional.get();
         }
 

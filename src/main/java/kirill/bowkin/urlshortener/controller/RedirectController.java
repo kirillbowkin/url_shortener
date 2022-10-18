@@ -1,16 +1,17 @@
 package kirill.bowkin.urlshortener.controller;
 
 import kirill.bowkin.urlshortener.entity.UrlsEntity;
+import kirill.bowkin.urlshortener.service.urlBuilder.UrlBuilder;
 import kirill.bowkin.urlshortener.service.urls.UrlsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -24,9 +25,13 @@ public class RedirectController {
         this.urlsService = urlsService;
     }
 
-    @GetMapping("/l/{shortUrl}")
-    public RedirectView redirect(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        String shortUrl = httpServletRequest.getRequestURL().toString();
+    @GetMapping("/l/{shortName}")
+    public RedirectView redirect(@PathVariable("shortName") String shortName, HttpServletResponse httpServletResponse) {
+        String shortUrl = new UrlBuilder()
+                .setDelimiter("/l/")
+                .setShortenedString(shortName)
+                .build();
+
         Optional<UrlsEntity> urlsEntity = urlsService.findUrl(shortUrl);
         if (urlsEntity.isPresent()) {
             urlsService.incrementUrlCounter(shortUrl);

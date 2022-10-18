@@ -37,7 +37,7 @@ class ShortUrlGeneratorServiceTest {
         String url = "http://google.com";
         String mockedShortenedString = "12abc";
         Mockito.when(stringShortener.shortenString(url)).thenReturn(mockedShortenedString);
-        Mockito.when(urlBuilder.setHostname(hostnameValue).setDelimiter("/l/").setShortenedString(mockedShortenedString).build()).thenReturn(hostnameValue + "/l/" + mockedShortenedString);
+        Mockito.when(urlBuilder.setDelimiter("/l/").setShortenedString(mockedShortenedString).build()).thenReturn(hostnameValue + "/l/" + mockedShortenedString);
 
         String shortUrl = shortUrlGeneratorService.generateShortUrl(url);
         String expectedUrl = hostnameValue + "/l/" + mockedShortenedString;

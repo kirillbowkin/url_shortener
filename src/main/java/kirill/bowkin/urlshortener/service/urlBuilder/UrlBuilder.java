@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 public class UrlBuilder {
 
     private final Logger logger = LoggerFactory.getLogger(UrlBuilder.class);
-    private String hostname;
-    private String delimiter;
-    private String shortenedString;
+    private String hostname = "";
+    private String delimiter = "";
+    private String shortenedString = "";
 
     public UrlBuilder setHostname(String hostname) {
         this.hostname = hostname;

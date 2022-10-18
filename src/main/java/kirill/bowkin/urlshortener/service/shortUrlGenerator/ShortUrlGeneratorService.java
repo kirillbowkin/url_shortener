@@ -26,7 +26,6 @@ public class ShortUrlGeneratorService implements ShortUrlGenerator {
     public String generateShortUrl(String url) {
         String shortenedString = stringShortener.shortenString(url);
         String shortUrl = urlBuilder
-                .setHostname(hostname)
                 .setDelimiter("/l/")
                 .setShortenedString(shortenedString)
                 .build();
