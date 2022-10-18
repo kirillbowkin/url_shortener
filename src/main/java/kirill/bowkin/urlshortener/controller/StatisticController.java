@@ -33,7 +33,11 @@ public class StatisticController {
 
     @GetMapping("/stats/{shortName}")
     public StatOneResponseDto statForOne(@PathVariable("shortName") String shortName) {
-        String shortUrl = UrlBuilder.buildUrl(hostname, "/", shortName);
+        String shortUrl = new UrlBuilder()
+                .setHostname(hostname)
+                .setDelimiter("/")
+                .setShortenedString(shortName)
+                .build();
 
         Optional<UrlsWithRankView> urlsWithRankViewOptional = urlsService.findOneUrlsRankView(shortUrl);
 

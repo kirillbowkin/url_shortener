@@ -21,11 +21,12 @@ class ShortUrlGeneratorServiceTest {
 
     @Mock
     private StringShortener stringShortener;
+    private UrlBuilder urlBuilder = Mockito.mock(UrlBuilder.class, Mockito.RETURNS_DEEP_STUBS);
 
 
     @BeforeEach
     void setUp() throws NoSuchFieldException, IllegalAccessException {
-        shortUrlGeneratorService = new ShortUrlGeneratorService(stringShortener);
+        shortUrlGeneratorService = new ShortUrlGeneratorService(stringShortener, urlBuilder);
         Field hostname = shortUrlGeneratorService.getClass().getDeclaredField("hostname");
         hostname.setAccessible(true);
         hostname.set(shortUrlGeneratorService, hostnameValue);
@@ -36,12 +37,11 @@ class ShortUrlGeneratorServiceTest {
         String url = "http://google.com";
         String mockedShortenedString = "12abc";
         Mockito.when(stringShortener.shortenString(url)).thenReturn(mockedShortenedString);
+        Mockito.when(urlBuilder.setHostname(hostnameValue).setDelimiter("/l/").setShortenedString(mockedShortenedString).build()).thenReturn(hostnameValue + "/l/" + mockedShortenedString);
 
-        try (var ms = Mockito.mockStatic(UrlBuilder.class)) {
-            ms.when(() -> UrlBuilder.buildUrl(hostnameValue, "/l/", mockedShortenedString)).thenReturn(hostnameValue + "/l/" + mockedShortenedString);
-            String shortUrl = shortUrlGeneratorService.generateShortUrl(url);
-            String expectedUrl = hostnameValue + "/l/" + mockedShortenedString;
-            assertEquals(expectedUrl, shortUrl);
-        }
+        String shortUrl = shortUrlGeneratorService.generateShortUrl(url);
+        String expectedUrl = hostnameValue + "/l/" + mockedShortenedString;
+        assertEquals(expectedUrl, shortUrl);
+
     }
 }

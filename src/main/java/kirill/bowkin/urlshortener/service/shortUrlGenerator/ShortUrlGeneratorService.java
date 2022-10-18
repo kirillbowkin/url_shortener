@@ -13,18 +13,24 @@ public class ShortUrlGeneratorService implements ShortUrlGenerator {
 
     private final Logger logger = LoggerFactory.getLogger(ShortUrlGeneratorService.class);
     private final StringShortener stringShortener;
+    private final UrlBuilder urlBuilder;
     @Value("${hostname}")
     private String hostname;
 
-    public ShortUrlGeneratorService(StringShortener stringShortener) {
+    public ShortUrlGeneratorService(StringShortener stringShortener, UrlBuilder urlBuilder) {
         this.stringShortener = stringShortener;
+        this.urlBuilder = urlBuilder;
     }
 
     @Override
     public String generateShortUrl(String url) {
         String shortenedString = stringShortener.shortenString(url);
-        String shortUrl = UrlBuilder.buildUrl(hostname, "/l/", shortenedString);
-        logger.info("IN generateShortUrl - Url {} was shortened to {}", url , shortUrl);
+        String shortUrl = urlBuilder
+                .setHostname(hostname)
+                .setDelimiter("/l/")
+                .setShortenedString(shortenedString)
+                .build();
+        logger.info("IN generateShortUrl - Url {} was shortened to {}", url, shortUrl);
         return shortUrl;
     }
 
