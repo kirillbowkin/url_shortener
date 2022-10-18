@@ -1,6 +1,7 @@
 package kirill.bowkin.urlshortener.service.shortUrlGenerator;
 
 import kirill.bowkin.urlshortener.service.stringShortener.StringShortener;
+import kirill.bowkin.urlshortener.service.urlBuilder.UrlBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,8 +37,11 @@ class ShortUrlGeneratorServiceTest {
         String mockedShortenedString = "12abc";
         Mockito.when(stringShortener.shortenString(url)).thenReturn(mockedShortenedString);
 
-        String shortUrl = shortUrlGeneratorService.generateShortUrl(url);
-        String expectedUrl = "http://" + hostnameValue + "/l/" + mockedShortenedString;
-        assertEquals(expectedUrl, shortUrl);
+        try (var ms = Mockito.mockStatic(UrlBuilder.class)) {
+            ms.when(() -> UrlBuilder.buildUrl(hostnameValue, "/l/", mockedShortenedString)).thenReturn(hostnameValue + "/l/" + mockedShortenedString);
+            String shortUrl = shortUrlGeneratorService.generateShortUrl(url);
+            String expectedUrl = hostnameValue + "/l/" + mockedShortenedString;
+            assertEquals(expectedUrl, shortUrl);
+        }
     }
 }
