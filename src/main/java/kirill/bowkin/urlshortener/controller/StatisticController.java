@@ -4,6 +4,8 @@ import kirill.bowkin.urlshortener.dto.StatOneResponseDto;
 import kirill.bowkin.urlshortener.service.urlBuilder.UrlBuilder;
 import kirill.bowkin.urlshortener.service.urls.UrlsService;
 import kirill.bowkin.urlshortener.view.UrlsWithRankView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class StatisticController {
 
     private final UrlsService urlsService;
+    private final Logger logger = LoggerFactory.getLogger(StatisticController.class);
+
     @Value("${hostname}")
     private String hostname;
 
@@ -43,6 +46,7 @@ public class StatisticController {
                     urlsWithRankView.getCount()
             );
         } else {
+            logger.error("Short url {} wasn't found", shortName);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Short url wasn't found");
         }
     }
