@@ -46,7 +46,7 @@ public class UrlShortenerController {
             logger.info("IN generateShortUrl - Generated short url {} for {}", savedEntity.getShortUrl(), originalUrl);
             return new GenerateResponseDto(savedEntity.getShortUrl());
         } catch (UrlFailedToSaveException e) {
-            logger.info("IN generateShortUrl - Failed to save url {}", originalUrl);
+            logger.error("IN generateShortUrl - Failed to save url {}", originalUrl);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save url", e.getCause());
         }
 
