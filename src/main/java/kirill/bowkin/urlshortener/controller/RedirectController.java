@@ -2,6 +2,8 @@ package kirill.bowkin.urlshortener.controller;
 
 import kirill.bowkin.urlshortener.entity.UrlsEntity;
 import kirill.bowkin.urlshortener.service.urls.UrlsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class RedirectController {
 
     private final UrlsService urlsService;
+    private final Logger logger = LoggerFactory.getLogger(RedirectController.class);
 
     public RedirectController(UrlsService urlsService) {
         this.urlsService = urlsService;
@@ -30,9 +33,12 @@ public class RedirectController {
 
             String originalUrl = urlsEntity.get().getUrl();
             httpServletResponse.addHeader("Cache-Control", "max-age=60, must-revalidate, no-transform");
+
+            logger.info("Redirecting from {} to {}", shortUrl, originalUrl);
             return new RedirectView(originalUrl);
         }
 
+        logger.error("Short url {} doesn't exist", shortUrl);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "short url doesn't exist");
     }
 }
