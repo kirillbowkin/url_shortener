@@ -16,6 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <mockito-core.version>4.8.0</mockito-core.version>
+        <junit-pioneer.version>1.7.1</junit-pioneer.version>
     </properties>
     <dependencies>
         <dependency>
@@ -45,6 +46,12 @@
             <version>${mockito-core.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit-pioneer</groupId>
+            <artifactId>junit-pioneer</artifactId>
+            <version>${junit-pioneer.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
