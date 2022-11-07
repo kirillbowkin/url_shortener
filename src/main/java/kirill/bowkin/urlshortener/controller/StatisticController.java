@@ -1,7 +1,9 @@
 package kirill.bowkin.urlshortener.controller;
 
 import kirill.bowkin.urlshortener.dto.StatOneResponseDto;
-import kirill.bowkin.urlshortener.service.urlBuilder.UrlBuilder;
+import kirill.bowkin.urlshortener.exception.UrlDoesNotExistsException;
+import kirill.bowkin.urlshortener.service.stat.StatService;
+import kirill.bowkin.urlshortener.service.urlValidator.UrlValidator;
 import kirill.bowkin.urlshortener.service.urls.UrlsService;
 import kirill.bowkin.urlshortener.view.UrlsWithRankView;
 import org.slf4j.Logger;
@@ -16,57 +18,37 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class StatisticController {
 
     private final UrlsService urlsService;
     private final Logger logger = LoggerFactory.getLogger(StatisticController.class);
+    private final UrlValidator urlValidator;
+    private final StatService statService;
+
 
     @Value("${hostname}")
     private String hostname;
 
-    public StatisticController(UrlsService urlsService) {
+    public StatisticController(UrlsService urlsService, UrlValidator urlValidator, StatService statService) {
         this.urlsService = urlsService;
+        this.urlValidator = urlValidator;
+        this.statService = statService;
     }
 
     @GetMapping("/stats/{shortName}")
     public StatOneResponseDto statForOne(@PathVariable("shortName") String shortName) {
-        String shortUrl = new UrlBuilder()
-                .setDelimiter("/l/")
-                .setShortenedString(shortName)
-                .build();
-
-        Optional<UrlsWithRankView> urlsWithRankViewOptional = urlsService.findOneUrlsRankView(shortUrl);
-
-        if (urlsWithRankViewOptional.isPresent()) {
-            UrlsWithRankView urlsWithRankView = urlsWithRankViewOptional.get();
-            return new StatOneResponseDto(
-                    urlsWithRankView.getShortUrl(),
-                    urlsWithRankView.getUrl(),
-                    urlsWithRankView.getRank(),
-                    urlsWithRankView.getCount()
-            );
-        } else {
-            logger.error("IN statForOne - Short url {} wasn't found", shortName);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Short url wasn't found");
+        try {
+            return statService.statForOne(shortName);
+        } catch (UrlDoesNotExistsException e) {
+            logger.error("IN statForOne - url for {} does not exists", shortName);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "url for " + shortName + " does not exists", e.getCause());
         }
     }
 
     @GetMapping("/stats")
     public List<StatOneResponseDto> statForAll(@RequestParam("page") int page, @RequestParam("count") int count) {
-
-        List<UrlsWithRankView> allRankView = urlsService.findAllRankView(PageRequest.of(page, count));
-
-        List<StatOneResponseDto> response = allRankView.stream()
-                .map(rankView -> new StatOneResponseDto(
-                        rankView.getShortUrl(),
-                        rankView.getUrl(),
-                        rankView.getRank(),
-                        rankView.getCount())
-                ).toList();
-
-        return response;
+        return statService.statForAll(page, count);
     }
 }

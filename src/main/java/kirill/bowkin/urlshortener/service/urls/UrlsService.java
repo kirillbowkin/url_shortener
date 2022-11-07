@@ -1,9 +1,11 @@
 package kirill.bowkin.urlshortener.service.urls;
 
 
+import kirill.bowkin.urlshortener.dto.GenerateRequestDto;
 import kirill.bowkin.urlshortener.entity.UrlsEntity;
 import kirill.bowkin.urlshortener.exception.UrlAlreadyExistsException;
 import kirill.bowkin.urlshortener.exception.UrlFailedToSaveException;
+import kirill.bowkin.urlshortener.exception.UrlInvalidException;
 import kirill.bowkin.urlshortener.repository.UrlsRankViewRepository;
 import kirill.bowkin.urlshortener.repository.UrlsRepository;
 import kirill.bowkin.urlshortener.service.shortUrlGenerator.ShortUrlGenerator;
@@ -46,7 +48,8 @@ public class UrlsService {
         return urlsRepository.findById(shortUrl);
     }
 
-    public UrlsEntity saveUrl(String url) throws UrlFailedToSaveException {
+    public UrlsEntity saveUrl(GenerateRequestDto generateRequestDto) throws UrlFailedToSaveException, UrlInvalidException {
+        String url = generateRequestDto.original();
         Optional<UrlsEntity> urlsEntityOptional = urlsRepository.findByUrl(url);
         if(urlsEntityOptional.isPresent()) {
             logger.info("IN saveUrl - url {} already exists, returning it", url);

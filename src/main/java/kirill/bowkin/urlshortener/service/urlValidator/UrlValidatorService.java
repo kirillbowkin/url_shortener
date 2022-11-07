@@ -12,10 +12,10 @@ public class UrlValidatorService implements UrlValidator {
     private final Logger logger = LoggerFactory.getLogger(UrlValidatorService.class);
 
     @Override
-    public boolean validate(String url) {
+    public boolean isValid(String url) {
         boolean isValid = Pattern.compile(URL_PATTERN).matcher(url).matches();
         if (isValid) logger.info("Url {} is valid", url);
-        else logger.error("IN validate - Url {} is not valid", url);
+        else logger.error("IN isValid - Url {} is not valid", url);
         return isValid;
     }
 }

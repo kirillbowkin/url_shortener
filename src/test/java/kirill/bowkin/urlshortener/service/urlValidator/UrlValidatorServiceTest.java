@@ -1,6 +1,5 @@
 package kirill.bowkin.urlshortener.service.urlValidator;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -13,14 +12,14 @@ class UrlValidatorServiceTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/valid_urls.csv")
     void shouldReturnTrueIfUrlIsValid(String url) {
-        boolean isValid = urlValidatorService.validate(url);
+        boolean isValid = urlValidatorService.isValid(url);
         assertTrue(isValid);
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/invalid_urls.csv")
     void shouldReturnFalseIfUrlIsInvalid(String url) {
-        boolean isValid = urlValidatorService.validate(url);
+        boolean isValid = urlValidatorService.isValid(url);
         assertFalse(isValid);
     }
 }
