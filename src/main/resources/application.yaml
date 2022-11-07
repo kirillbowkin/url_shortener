@@ -1,0 +1,24 @@
+# Logging for sql statements
+#  https://www.baeldung.com/sql-logging-spring-boot#2-via-loggers
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_ADDRESS}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+server:
+  error:
+    include-message: always
+
+hostname: ${HOSTNAME:localhost:8080}
